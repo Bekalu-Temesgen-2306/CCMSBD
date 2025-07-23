@@ -10,7 +10,8 @@
     },
     {
       "officialId": "OFF002",
-      "name": "Almaz Getachew",
+      "firstName": "Almaz ",
+      "lastName": "Getachew",
       "department": "Sports",
       "role": "department_official",
       "username": "almaz.sports",

@@ -1,29 +1,43 @@
 {
   "risks": [
     {
-      "name": "Alice Wilson",
-      "studentId": "stu01",
+      "firstName": "Alice Wilson",
+      "lastName": "Wilson",
+      "studentId": "stu001",
       "department": "Computer Science",
-      "case": "Overdue Books - 3 books not returned"
+      "case": "Overdue Books - 3 books not returned",
+      "addedBy": "Abebe Kebede",
+      "addedOn": "2023-10-01"
+
+      
     },
     {
-      "name": "David Lee",
+      "firstName": "David Lee",
+      "lastName": "Lee",
       "studentId": "BDU/CS/004/16",
       "department": "Computer Science",
-      "case": "Damaged Equipment - Lab computer monitor"
+      "case": "Damaged Equipment - Lab computer monitor",
+      "addedBy": "Almaz Getachew",
+      "addedOn": "2023-10-02"
     },
     {
-      "name": "Selam Tesfaye",
+      "firstName": "Selam Tesfaye",
+      "lastName": "Tesfaye",
       "studentId": "BDU/IT/002/16",
       "department": "Information Technology",
-      "case": "Pending Lab Fee Payment"
+      "case": "Pending Lab Fee Payment",
+      "addedBy": "Bereket Desta",
+      "addedOn": "2023-10-03" 
     },
 
     {
-       "name": "Tesfaye",
+       "firstName": "Tesfaye",
+        "lastName": "Tesfaye",
       "studentId": "BDU/IT/002/16",
       "department": "Information Technology",
-      "case": "Pending Lab Fee Payment"
+      "case": "Pending Lab Fee Payment",
+      "addedBy": "Eden Taye",
+      "addedOn": "2023-10-04"
     }
   ]
 }

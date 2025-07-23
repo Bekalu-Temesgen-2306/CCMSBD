@@ -11,6 +11,7 @@ import {
   Alert
 } from "react-bootstrap";
 import { PencilSquare, Trash } from "react-bootstrap-icons";
+import { FiLogOut } from 'react-icons/fi'; // or BiLogOut from 'react-icons/bi'
 import logo from "../assets/logo.png";
 
 // ✅ Import mock data (only as fallback if no localStorage data)
@@ -22,11 +23,14 @@ function DepartmentAdmin({ currentUser }) {
   const [formMode, setFormMode] = useState("add"); // "add" or "edit"
   const [editingIndex, setEditingIndex] = useState(null);
   const [studentForm, setStudentForm] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     studentId: "",
     department: "",
     riskCase: "",
-    addedBy: currentUser?.name || "Library Official",
+    addedBy: currentUser?.firstName 
+  ? `${currentUser.firstName} (${currentUser.department || 'No Dept'})`
+  : "Official"
   });
   const [formError, setFormError] = useState(null);
 
@@ -48,11 +52,14 @@ function DepartmentAdmin({ currentUser }) {
   const openAddModal = () => {
     setFormMode("add");
     setStudentForm({
-      name: "",
+      firstName: "",
+      lastName: "",
       studentId: "",
       department: "",
       riskCase: "",
-      addedBy: currentUser?.name || "Library Official",
+     addedBy: currentUser?.firstName 
+  ? `${currentUser.firstName} (${currentUser.department || 'No Dept'})`
+  : "Official"
     });
     setShowModal(true);
   };
@@ -68,25 +75,29 @@ function DepartmentAdmin({ currentUser }) {
     setShowModal(false);
     setFormError(null);
     setStudentForm({
-      name: "",
+      firstName: "",
+      lastName: "",
       studentId: "",
       department: "",
       riskCase: "",
-      addedBy: currentUser?.name || "Library Official",
+      addedBy: currentUser?.firstName 
+  ? `${currentUser.firstName} (${currentUser.department || 'No Dept'})`
+  : "Official"
     });
   };
 
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setStudentForm((prev) => ({ ...prev, [name]: value }));
-    setFormError(null);
-  };
+const handleFormChange = (e) => {
+  const { name, value } = e.target;
+  setStudentForm((prev) => ({ ...prev, [name]: value }));
+  setFormError(null);
+};
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
     if (
-      !studentForm.name.trim() ||
+      !studentForm.firstName.trim() ||
+      !studentForm.lastName.trim() ||
       !studentForm.studentId.trim() ||
       !studentForm.department.trim() ||
       !studentForm.riskCase.trim()
@@ -127,7 +138,7 @@ function DepartmentAdmin({ currentUser }) {
         </div>
         <div className="d-flex flex-column align-items-end">
           <span className="fw-semibold text-primary">
-            👤 Role: {currentUser?.role || "Department Official"}
+            👤 Role: {currentUser?.department || "Department Official"}
           </span>
           <Button
             variant="outline-danger"
@@ -138,7 +149,7 @@ function DepartmentAdmin({ currentUser }) {
               window.location.href = "/login";
             }}
           >
-            Logout
+            <FiLogOut style={{ marginRight: '5px' }} /> Logout
           </Button>
         </div>
       </div>
@@ -147,7 +158,7 @@ function DepartmentAdmin({ currentUser }) {
       <Card className="mb-4 shadow-sm">
         <Card.Body className="d-flex justify-content-between align-items-center">
           <div>
-            <h5 className="mb-1">Students at Risk in Library</h5>
+            <h5 className="mb-1">Students at Risk in {currentUser?.department || "Department Official"}</h5>
             <p className="text-muted mb-0">Students with pending issues</p>
           </div>
           <div className="display-4 text-danger fw-bold">{riskStudents.length}</div>
@@ -167,7 +178,8 @@ function DepartmentAdmin({ currentUser }) {
           <Table striped bordered hover responsive>
             <thead className="table-light">
               <tr>
-                <th>Student Name</th>
+                <th>FirstName</th>
+                <th>LastName</th>
                 <th>Student ID</th>
                 <th>Department</th>
                 <th>Risk Case</th>
@@ -178,7 +190,8 @@ function DepartmentAdmin({ currentUser }) {
             <tbody>
               {riskStudents.map((student, index) => (
                 <tr key={index}>
-                  <td>{student.name}</td>
+                  <td>{student.firstName}</td>
+                  <td>{student.lastName}</td>
                   <td>{student.studentId}</td>
                   <td>{student.department}</td>
                   <td>{student.riskCase}</td>
@@ -224,11 +237,22 @@ function DepartmentAdmin({ currentUser }) {
           {formError && <Alert variant="danger">{formError}</Alert>}
           <Form onSubmit={handleFormSubmit}>
             <Form.Group className="mb-3" controlId="nameInput">
-              <Form.Label>Student Name</Form.Label>
+              <Form.Label>First Name</Form.Label>
               <Form.Control
                 type="text"
-                name="name"
-                value={studentForm.name}
+                name="firstName"
+                value={studentForm.firstName}
+                onChange={handleFormChange}
+                placeholder="Enter student's full name"
+                required
+              />
+            </Form.Group>
+             <Form.Group className="mb-3" controlId="nameInput">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="lastName"
+                value={studentForm.lastName}
                 onChange={handleFormChange}
                 placeholder="Enter student's full name"
                 required
@@ -241,7 +265,7 @@ function DepartmentAdmin({ currentUser }) {
                 name="studentId"
                 value={studentForm.studentId}
                 onChange={handleFormChange}
-                placeholder="e.g., BDU/CS/001/16"
+                placeholder="BDU1504556"
                 required
               />
             </Form.Group>
