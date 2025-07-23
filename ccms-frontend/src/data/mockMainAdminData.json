@@ -1,0 +1,20 @@
+{
+  "admins": [
+    {
+      "adminId": "ADM001",
+      "name": "Samuel Mekonnen",
+      "department": "Administration",
+      "role": "admin",
+      "username": "samuel.admin",
+      "password": "admin123"
+    },
+    {
+      "adminId": "ADM002",
+      "name": "Hanna Eshetu",
+      "department": "IT Services",
+      "role": "admin",
+      "username": "hanna.it",
+      "password": "itadmin456"
+    }
+  ]
+}

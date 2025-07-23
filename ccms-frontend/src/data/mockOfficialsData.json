@@ -1,0 +1,44 @@
+{
+  "officials": [
+    {
+      "officialId": "OFF001",
+      "name": "Abebe Kebede",
+      "department": "Library",
+      "role": "department_official",
+      "username": "abebe.library",
+      "password": "library123"
+    },
+    {
+      "officialId": "OFF002",
+      "name": "Almaz Getachew",
+      "department": "Sports",
+      "role": "department_official",
+      "username": "almaz.sports",
+      "password": "sports123"
+    },
+    {
+      "officialId": "OFF003",
+      "name": "Bereket Desta",
+      "department": "Dormitory",
+      "role": "department_official",
+      "username": "bereket.dorm",
+      "password": "dorm123"
+    },
+    {
+      "officialId": "OFF004",
+      "name": "Eden Taye",
+      "department": "Registrar",
+      "role": "department_official",
+      "username": "eden.registrar",
+      "password": "reg123"
+    },
+    {
+      "officialId": "ADM001",
+      "name": "Samuel Mekonnen",
+      "department": "Administration",
+      "role": "admin",
+      "username": "samuel.admin",
+      "password": "admin123"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "students": [
+    {
+      "username": "stu001",
+      "password": "pass123",
+      "studentName": "John Doe",
+      "studentId": "stu001",
+      "department": "Computer Science"
+    }
+  ]
+}

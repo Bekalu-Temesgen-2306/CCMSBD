@@ -1,0 +1,29 @@
+{
+  "risks": [
+    {
+      "name": "Alice Wilson",
+      "studentId": "stu01",
+      "department": "Computer Science",
+      "case": "Overdue Books - 3 books not returned"
+    },
+    {
+      "name": "David Lee",
+      "studentId": "BDU/CS/004/16",
+      "department": "Computer Science",
+      "case": "Damaged Equipment - Lab computer monitor"
+    },
+    {
+      "name": "Selam Tesfaye",
+      "studentId": "BDU/IT/002/16",
+      "department": "Information Technology",
+      "case": "Pending Lab Fee Payment"
+    },
+
+    {
+       "name": "Tesfaye",
+      "studentId": "BDU/IT/002/16",
+      "department": "Information Technology",
+      "case": "Pending Lab Fee Payment"
+    }
+  ]
+}

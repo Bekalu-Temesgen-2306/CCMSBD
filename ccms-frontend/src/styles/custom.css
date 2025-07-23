@@ -1,0 +1,25 @@
+/* Tailwind directives removed. 
+   Use this file for custom CSS, and import the compiled Tailwind CSS instead. */
+#CCMSLOGINPAGE{
+   min-height: 100vh;
+   background-color: '#fof4f8';
+   box-shadow: 0 0 10px 20px #2A9DD5;
+
+}
+
+#loginfirst{
+   max-width: 400px;
+   width: 100%;
+   border:dashed 10px #2A9DD5;
+
+}
+
+@media(max-width:768px){
+   .clearanceRequest{
+
+      width: 100%;
+      background-color: red;
+
+}
+
+}
