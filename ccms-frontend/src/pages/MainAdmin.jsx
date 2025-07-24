@@ -12,7 +12,7 @@ import {
   Nav,
   InputGroup
 } from "react-bootstrap";
-import { PencilSquare, Trash, Search, Download } from "react-bootstrap-icons";
+import { PencilSquare, Trash, Search, Download, Phone } from "react-bootstrap-icons";
 import logo from "../assets/logo.png";
 
 // ✅ Import mock data
@@ -28,12 +28,14 @@ function MainAdmin({ currentUser }) {
   const [editingIndex, setEditingIndex] = useState(null);
   const [officialForm, setOfficialForm] = useState({
     officialId: "",
-    name: "",
+    firstName: "",
+    lastName:"",
     profession: "",
     education: "",
     department: "",
-    contact: "",
+ 
     email: "",
+    phone:"",
     username: "",
     password: "",
   });
@@ -89,12 +91,14 @@ function MainAdmin({ currentUser }) {
     setFormMode("add");
     setOfficialForm({
       officialId: "",
-      name: "",
+      firstName: "",
+      lastName:"",
       profession: "",
       education: "",
       department: "",
-      contact: "",
+   
       email: "",
+      phone:"",
       username: "",
       password: "",
     });
@@ -123,11 +127,13 @@ function MainAdmin({ currentUser }) {
 
     if (
       !officialForm.officialId.trim() ||
-      !officialForm.name.trim() ||
+      !officialForm.firstName.trim() ||
+      !officialForm.lastName.trim() ||
+
       !officialForm.profession.trim() ||
       !officialForm.education.trim() ||
       !officialForm.department.trim() ||
-      !officialForm.contact.trim() ||
+      !officialForm.phone.trim() ||
       !officialForm.email.trim() ||
       !officialForm.username.trim() ||
       !officialForm.password.trim()
@@ -216,7 +222,7 @@ function MainAdmin({ currentUser }) {
         </div>
         <div className="d-flex flex-column align-items-end">
           <span className="fw-semibold text-primary">
-            👤 {currentUser?.name || "Admin User"} ({currentUser?.role || "Main Administrator"})
+            👤 {currentUser?.firstName || "Admin User"} ({currentUser?.role || "Main Administrator"})
           </span>
           <Button
             variant="outline-danger"
@@ -310,11 +316,14 @@ function MainAdmin({ currentUser }) {
               <thead className="table-light">
                 <tr>
                   <th>Official ID</th>
-                  <th>Name</th>
+                  <th>FirstName</th>
+                  <th>LastName</th>
                   <th>Profession</th>
                   <th>Education</th>
                   <th>Department</th>
-                  <th>Contact</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                 
                   <th>Username</th>
                   <th>Actions</th>
                 </tr>
@@ -324,15 +333,14 @@ function MainAdmin({ currentUser }) {
                   filteredOfficials.map((official, index) => (
                     <tr key={index}>
                       <td>{official.officialId}</td>
-                      <td>{official.name}</td>
+                      <td>{official.firstName}</td>
+                      <td>{official.lastName}</td>
                       <td>{official.profession}</td>
                       <td>{official.education}</td>
                       <td>{official.department}</td>
+                      <td> {official.email}</td>
                       <td>
-                        {official.email}
-                        <br />
-                        {official.contact}
-                      </td>
+                        {official.phone}</td>
                       <td>{official.username}</td>
                       <td>
                         <Button
@@ -395,20 +403,25 @@ function MainAdmin({ currentUser }) {
             <Table striped bordered hover responsive>
               <thead className="table-light">
                 <tr>
-                  <th>Student Name</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
                   <th>Student ID</th>
                   <th>Department</th>
                   <th>Risk Case</th>
+                  <th>Added by</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredRisks.length > 0 ? (
                   filteredRisks.map((risk, index) => (
                     <tr key={index}>
-                      <td>{risk.name}</td>
+                      <td>{risk.firstName}</td>
+                      <td>{risk.lastName}</td>
                       <td>{risk.studentId}</td>
                       <td>{risk.department}</td>
                       <td>{risk.case}</td>
+                      <td>{risk.addedBy}</td>
+
                     </tr>
                   ))
                 ) : (
@@ -453,11 +466,23 @@ function MainAdmin({ currentUser }) {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="nameInput">
-              <Form.Label>Name</Form.Label>
+              <Form.Label>First Name</Form.Label>
               <Form.Control
                 type="text"
-                name="name"
-                value={officialForm.name}
+                name="firstName"
+                value={officialForm.firstName}
+                onChange={handleFormChange}
+                placeholder="Enter full name"
+                required
+              />
+            </Form.Group>
+
+             <Form.Group className="mb-3" controlId="nameInput">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="lastName"
+                value={officialForm.lastName}
                 onChange={handleFormChange}
                 placeholder="Enter full name"
                 required
@@ -530,16 +555,18 @@ function MainAdmin({ currentUser }) {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="contactInput">
-              <Form.Label>Contact</Form.Label>
+              <Form.Label>Phone</Form.Label>
               <Form.Control
-                type="text"
-                name="contact"
-                value={officialForm.contact}
+                type="number"
+                name="phone"
+                value={officialForm.phone}
                 onChange={handleFormChange}
-                placeholder="Enter contact number"
+                placeholder="Enter phone number"
                 required
               />
             </Form.Group>
+
+            
             <Button type="submit" variant="primary" className="w-100">
               {formMode === "add" ? "Add Official" : "Update Official"}
             </Button>
