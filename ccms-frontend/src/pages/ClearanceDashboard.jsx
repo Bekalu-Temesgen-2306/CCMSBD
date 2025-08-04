@@ -100,7 +100,7 @@ function ClearanceDashboard({ currentUser }) {
       <ClearanceForm
         show={showFormModal}
         handleClose={handleCloseForm}
-        studentId={currentUser?.id}
+        currentUser={currentUser}
       />
     </div>
   );

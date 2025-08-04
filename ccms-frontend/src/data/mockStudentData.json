@@ -4,8 +4,121 @@
       "username": "stu001",
       "password": "pass123",
       "studentName": "John Doe",
-      "studentId": "stu001",
-      "department": "Computer Science"
+      "firstName": "John",
+      "lastName": "Doe",
+      "studentId": "BDU/CS/001/16",
+      "department": "Computer Science",
+      "academicYear": "2016",
+      "semester": "2nd",
+      "yearOfStudy": "IV"
+    },
+    {
+      "username": "stu002",
+      "password": "pass123",
+      "studentName": "Alice Wilson",
+      "firstName": "Alice",
+      "lastName": "Wilson",
+      "studentId": "BDU/CS/002/16",
+      "department": "Computer Science",
+      "academicYear": "2016",
+      "semester": "2nd",
+      "yearOfStudy": "IV"
+    },
+    {
+      "username": "stu003",
+      "password": "pass123",
+      "studentName": "David Lee",
+      "firstName": "David",
+      "lastName": "Lee",
+      "studentId": "BDU/CS/003/16",
+      "department": "Computer Science",
+      "academicYear": "2016",
+      "semester": "2nd",
+      "yearOfStudy": "III"
+    },
+    {
+      "username": "stu004",
+      "password": "pass123",
+      "studentName": "Selam Tesfaye",
+      "firstName": "Selam",
+      "lastName": "Tesfaye",
+      "studentId": "BDU/IT/001/16",
+      "department": "Information Technology",
+      "academicYear": "2016",
+      "semester": "2nd",
+      "yearOfStudy": "IV"
+    },
+    {
+      "username": "stu005",
+      "password": "pass123",
+      "studentName": "Bereket Desta",
+      "firstName": "Bereket",
+      "lastName": "Desta",
+      "studentId": "BDU/IT/002/16",
+      "department": "Information Technology",
+      "academicYear": "2016",
+      "semester": "2nd",
+      "yearOfStudy": "III"
+    },
+    {
+      "username": "stu006",
+      "password": "pass123",
+      "studentName": "Eden Taye",
+      "firstName": "Eden",
+      "lastName": "Taye",
+      "studentId": "BDU/EE/001/16",
+      "department": "Electrical Engineering",
+      "academicYear": "2016",
+      "semester": "2nd",
+      "yearOfStudy": "IV"
+    },
+    {
+      "username": "stu007",
+      "password": "pass123",
+      "studentName": "Abebe Kebede",
+      "firstName": "Abebe",
+      "lastName": "Kebede",
+      "studentId": "BDU/EE/002/16",
+      "department": "Electrical Engineering",
+      "academicYear": "2016",
+      "semester": "2nd",
+      "yearOfStudy": "III"
+    },
+    {
+      "username": "stu008",
+      "password": "pass123",
+      "studentName": "Almaz Getachew",
+      "firstName": "Almaz",
+      "lastName": "Getachew",
+      "studentId": "BDU/ME/001/16",
+      "department": "Mechanical Engineering",
+      "academicYear": "2016",
+      "semester": "2nd",
+      "yearOfStudy": "IV"
+    },
+    {
+      "username": "stu009",
+      "password": "pass123",
+      "studentName": "Tesfaye Kebede",
+      "firstName": "Tesfaye",
+      "lastName": "Kebede",
+      "studentId": "BDU/ME/002/16",
+      "department": "Mechanical Engineering",
+      "academicYear": "2016",
+      "semester": "2nd",
+      "yearOfStudy": "III"
+    },
+    {
+      "username": "stu010",
+      "password": "pass123",
+      "studentName": "Kidist Solomon",
+      "firstName": "Kidist",
+      "lastName": "Solomon",
+      "studentId": "BDU/CE/001/16",
+      "department": "Civil Engineering",
+      "academicYear": "2016",
+      "semester": "2nd",
+      "yearOfStudy": "IV"
     }
   ]
 }

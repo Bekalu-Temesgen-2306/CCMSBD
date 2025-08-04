@@ -13,6 +13,7 @@ import {
   InputGroup
 } from "react-bootstrap";
 import { PencilSquare, Trash, Search, Download, Phone } from "react-bootstrap-icons";
+import * as XLSX from 'xlsx';
 import logo from "../assets/logo.png";
 
 // ✅ Import mock data
@@ -203,6 +204,31 @@ function MainAdmin({ currentUser }) {
     document.body.removeChild(link);
   };
 
+  // ✅ Export filtered data to Excel
+  const exportFilteredToExcel = (data, filename) => {
+    if (data.length === 0) {
+      alert("No data to export.");
+      return;
+    }
+
+    try {
+      // Create a new workbook
+      const workbook = XLSX.utils.book_new();
+      
+      // Convert data to worksheet
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      
+      // Add worksheet to workbook
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
+      
+      // Generate Excel file
+      XLSX.writeFile(workbook, `${filename}.xlsx`);
+    } catch (error) {
+      console.error("Error exporting to Excel:", error);
+      alert("Error exporting to Excel. Please try again.");
+    }
+  };
+
   return (
     <Container
       fluid
@@ -307,6 +333,15 @@ function MainAdmin({ currentUser }) {
                 >
                   <Download className="me-1" /> Download CSV
                 </Button>
+                <Button
+                  variant="info"
+                  className="me-2"
+                  onClick={() =>
+                    exportFilteredToExcel(filteredOfficials, "filtered_officials")
+                  }
+                >
+                  <Download className="me-1" /> Export Excel
+                </Button>
                 <Button variant="primary" onClick={openAddModal}>
                   + Add Official
                 </Button>
@@ -390,14 +425,25 @@ function MainAdmin({ currentUser }) {
                   onChange={(e) => setRiskSearch(e.target.value)}
                 />
               </InputGroup>
-              <Button
-                variant="success"
-                onClick={() =>
-                  exportFilteredToCSV(filteredRisks, "filtered_risk_students.csv")
-                }
-              >
-                <Download className="me-1" /> Download CSV
-              </Button>
+              <div>
+                <Button
+                  variant="success"
+                  className="me-2"
+                  onClick={() =>
+                    exportFilteredToCSV(filteredRisks, "filtered_risk_students.csv")
+                  }
+                >
+                  <Download className="me-1" /> Download CSV
+                </Button>
+                <Button
+                  variant="info"
+                  onClick={() =>
+                    exportFilteredToExcel(filteredRisks, "filtered_risk_students")
+                  }
+                >
+                  <Download className="me-1" /> Export Excel
+                </Button>
+              </div>
             </div>
             <h5>Risk Tables Overview</h5>
             <Table striped bordered hover responsive>
@@ -419,14 +465,14 @@ function MainAdmin({ currentUser }) {
                       <td>{risk.lastName}</td>
                       <td>{risk.studentId}</td>
                       <td>{risk.department}</td>
-                      <td>{risk.case}</td>
+                      <td>{risk.riskCase || risk.case}</td>
                       <td>{risk.addedBy}</td>
 
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" className="text-center">
+                    <td colSpan="6" className="text-center">
                       No matching risk students found.
                     </td>
                   </tr>

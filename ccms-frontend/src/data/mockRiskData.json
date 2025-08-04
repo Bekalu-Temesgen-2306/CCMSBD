@@ -1,42 +1,39 @@
 {
   "risks": [
     {
-      "firstName": "Alice Wilson",
+      "firstName": "Alice",
       "lastName": "Wilson",
-      "studentId": "stu001",
+      "studentId": "BDU/CS/002/16",
       "department": "Computer Science",
-      "case": "Overdue Books - 3 books not returned",
-      "addedBy": "Abebe Kebede",
+      "riskCase": "Overdue Books - 3 books not returned",
+      "addedBy": "Abebe Tesfaye (Library)",
       "addedOn": "2023-10-01"
-
-      
     },
     {
-      "firstName": "David Lee",
+      "firstName": "David",
       "lastName": "Lee",
-      "studentId": "BDU/CS/004/16",
+      "studentId": "BDU/CS/003/16",
       "department": "Computer Science",
-      "case": "Damaged Equipment - Lab computer monitor",
-      "addedBy": "Almaz Getachew",
+      "riskCase": "Damaged Equipment - Lab computer monitor",
+      "addedBy": "Almaz Getachew (Sports)",
       "addedOn": "2023-10-02"
     },
     {
-      "firstName": "Selam Tesfaye",
+      "firstName": "Selam",
       "lastName": "Tesfaye",
-      "studentId": "BDU/IT/002/16",
+      "studentId": "BDU/IT/001/16",
       "department": "Information Technology",
-      "case": "Pending Lab Fee Payment",
-      "addedBy": "Bereket Desta",
-      "addedOn": "2023-10-03" 
+      "riskCase": "Pending Lab Fee Payment",
+      "addedBy": "Bereket Hailu (Dormitory)",
+      "addedOn": "2023-10-03"
     },
-
     {
-       "firstName": "Tesfaye",
-        "lastName": "Tesfaye",
+      "firstName": "Bereket",
+      "lastName": "Desta",
       "studentId": "BDU/IT/002/16",
       "department": "Information Technology",
-      "case": "Pending Lab Fee Payment",
-      "addedBy": "Eden Taye",
+      "riskCase": "Pending Lab Fee Payment",
+      "addedBy": "Eden Tesfaye (Registrar)",
       "addedOn": "2023-10-04"
     }
   ]

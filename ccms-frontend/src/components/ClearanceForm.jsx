@@ -17,7 +17,7 @@ import autoTable from 'jspdf-autotable';
 import mockStudentData from '../data/mockStudentData.json'; // adjust path
 import mockRiskData from '../data/mockRiskData.json';       // adjust path
 
-function ClearanceForm({ show, handleClose }) {
+function ClearanceForm({ show, handleClose, currentUser }) {
   const [formData, setFormData] = useState({
     studentName: '',
     fatherName: '',
@@ -38,13 +38,33 @@ function ClearanceForm({ show, handleClose }) {
   const [status, setStatus] = useState(null);
   const [pdfPreview, setPdfPreview] = useState(false);
 
-  // Auto-fill current date on modal open
+  // Auto-fill student data from mock data when modal opens
   useEffect(() => {
-    if (show) {
-      const nowISO = new Date().toISOString().slice(0, 16);
-      setFormData((prev) => ({ ...prev, date: nowISO }));
+    if (show && currentUser) {
+      const studentData = mockStudentData.students.find(
+        student => student.studentId === currentUser.id
+      );
+      
+      if (studentData) {
+        setFormData(prev => ({
+          ...prev,
+          studentName: studentData.studentName || '',
+          studentId: studentData.studentId || '',
+          department: studentData.department || '',
+          academicYear: studentData.academicYear || '',
+          semester: studentData.semester || '',
+          yearOfStudy: studentData.yearOfStudy || '',
+          // Keep dynamic fields empty for user input
+          fatherName: '',
+          grandFatherName: '',
+          sex: 'Male',
+          reason: '',
+          otherReason: '',
+          date: new Date().toISOString().slice(0, 16)
+        }));
+      }
     }
-  }, [show]);
+  }, [show, currentUser]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,22 +75,11 @@ function ClearanceForm({ show, handleClose }) {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.studentName.trim())
-      newErrors.studentName = 'Student Name is required.';
+    // Only validate dynamic fields that user needs to fill
     if (!formData.fatherName.trim())
       newErrors.fatherName = 'Father\'s Name is required.';
     if (!formData.grandFatherName.trim())
       newErrors.grandFatherName = 'Grandfather\'s Name is required.';
-    if (!formData.studentId.trim())
-      newErrors.studentId = 'Student ID is required.';
-    if (!formData.department.trim())
-      newErrors.department = 'Department is required.';
-    if (!formData.academicYear.trim())
-      newErrors.academicYear = 'Academic Year is required.';
-    if (!formData.semester)
-      newErrors.semester = 'Semester selection is required.';
-    if (!formData.yearOfStudy)
-      newErrors.yearOfStudy = 'Year of Study is required.';
     if (!formData.reason)
       newErrors.reason = 'Reason for Clearance is required.';
     if (formData.reason === 'Other' && !formData.otherReason.trim())
@@ -237,12 +246,17 @@ function ClearanceForm({ show, handleClose }) {
 
         <Form onSubmit={handleSubmit} className="p-4 bg-white rounded shadow-sm border">
           <h5 className="fw-bold border-bottom pb-2 mb-3 text-primary">Personal Information</h5>
+          
+          <Alert variant="info" className="mb-3">
+            <strong>📋 Form Information:</strong> Fields marked with <span className="text-muted">(Auto-filled)</span> are pre-filled from your student profile. 
+            You only need to complete the remaining fields marked with <span className="text-danger">*</span>.
+          </Alert>
 
           {/* Student Name */}
           <Row className="mb-3">
             <Col md={6} className="mb-3">
               <Form.Group controlId="studentName">
-                <Form.Label className="fw-bold">Student Name *</Form.Label>
+                <Form.Label className="fw-bold">Student Name <small className="text-muted">(Auto-filled)</small></Form.Label>
                 <Form.Control
                   type="text"
                   name="studentName"
@@ -251,6 +265,8 @@ function ClearanceForm({ show, handleClose }) {
                   isInvalid={!!errors.studentName}
                   placeholder="John Doe"
                   required
+                  readOnly
+                  className="bg-light"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.studentName}
@@ -261,7 +277,7 @@ function ClearanceForm({ show, handleClose }) {
             {/* Father Name */}
             <Col md={6} className="mb-3">
               <Form.Group controlId="fatherName">
-                <Form.Label className="fw-bold">Father’s Name *</Form.Label>
+                <Form.Label className="fw-bold">Father's Name *</Form.Label>
                 <Form.Control
                   type="text"
                   name="fatherName"
@@ -282,7 +298,7 @@ function ClearanceForm({ show, handleClose }) {
           <Row className="mb-3">
             <Col md={6} className="mb-3">
               <Form.Group controlId="grandFatherName">
-                <Form.Label className="fw-bold">Grandfather’s Name *</Form.Label>
+                <Form.Label className="fw-bold">Grandfather's Name *</Form.Label>
                 <Form.Control
                   type="text"
                   name="grandFatherName"
@@ -330,7 +346,7 @@ function ClearanceForm({ show, handleClose }) {
           <Row className="mb-3">
             <Col md={3} className="mb-3">
               <Form.Group controlId="studentId">
-                <Form.Label className="fw-bold">Student ID *</Form.Label>
+                <Form.Label className="fw-bold">Student ID <small className="text-muted">(Auto-filled)</small></Form.Label>
                 <Form.Control
                   type="text"
                   name="studentId"
@@ -339,6 +355,8 @@ function ClearanceForm({ show, handleClose }) {
                   isInvalid={!!errors.studentId}
                   placeholder="STU001"
                   required
+                  readOnly
+                  className="bg-light"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.studentId}
@@ -349,7 +367,7 @@ function ClearanceForm({ show, handleClose }) {
             {/* Department */}
             <Col md={3} className="mb-3">
               <Form.Group controlId="department">
-                <Form.Label className="fw-bold">Department *</Form.Label>
+                <Form.Label className="fw-bold">Department <small className="text-muted">(Auto-filled)</small></Form.Label>
                 <Form.Control
                   type="text"
                   name="department"
@@ -358,6 +376,8 @@ function ClearanceForm({ show, handleClose }) {
                   isInvalid={!!errors.department}
                   placeholder="Computer Science"
                   required
+                  readOnly
+                  className="bg-light"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.department}
@@ -368,7 +388,7 @@ function ClearanceForm({ show, handleClose }) {
             {/* Academic Year */}
             <Col md={3} className="mb-3">
               <Form.Group controlId="academicYear">
-                <Form.Label className="fw-bold">Academic Year *</Form.Label>
+                <Form.Label className="fw-bold">Academic Year <small className="text-muted">(Auto-filled)</small></Form.Label>
                 <Form.Control
                   type="text"
                   name="academicYear"
@@ -377,6 +397,8 @@ function ClearanceForm({ show, handleClose }) {
                   isInvalid={!!errors.academicYear}
                   placeholder="e.g., 2016"
                   required
+                  readOnly
+                  className="bg-light"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.academicYear}
@@ -387,13 +409,15 @@ function ClearanceForm({ show, handleClose }) {
             {/* Semester */}
             <Col md={3} className="mb-3">
               <Form.Group controlId="semester">
-                <Form.Label className="fw-bold">Semester *</Form.Label>
+                <Form.Label className="fw-bold">Semester <small className="text-muted">(Auto-filled)</small></Form.Label>
                 <Form.Select
                   name="semester"
                   value={formData.semester}
                   onChange={handleChange}
                   isInvalid={!!errors.semester}
                   required
+                  disabled
+                  className="bg-light"
                 >
                   <option value="">Select semester</option>
                   <option value="1st">1st</option>
@@ -410,13 +434,15 @@ function ClearanceForm({ show, handleClose }) {
           <Row className="mb-3">
             <Col md={3} className="mb-3">
               <Form.Group controlId="yearOfStudy">
-                <Form.Label className="fw-bold">Year of Study *</Form.Label>
+                <Form.Label className="fw-bold">Year of Study <small className="text-muted">(Auto-filled)</small></Form.Label>
                 <Form.Select
                   name="yearOfStudy"
                   value={formData.yearOfStudy}
                   onChange={handleChange}
                   isInvalid={!!errors.yearOfStudy}
                   required
+                  disabled
+                  className="bg-light"
                 >
                   <option value="">Select year</option>
                   <option value="I">I</option>

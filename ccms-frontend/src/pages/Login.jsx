@@ -69,8 +69,13 @@ function Login({ setCurrentUser, setIsAuthenticated }) {
       const userData = {
         role: official.role, // department_official or admin
         id: official.officialId,
-        name: official.name,
+        firstName: official.firstName,
+        lastName: official.lastName,
+        name: `${official.firstName} ${official.lastName}`,
         department: official.department,
+        profession: official.profession,
+        email: official.email,
+        phone: official.phone
       };
 
       setCurrentUser(userData);
