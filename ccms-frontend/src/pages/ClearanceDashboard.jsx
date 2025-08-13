@@ -11,6 +11,12 @@ function ClearanceDashboard({ currentUser }) {
   const handleOpenForm = () => setShowFormModal(true);
   const handleCloseForm = () => setShowFormModal(false);
 
+  // Add logout functionality
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser");
+    window.location.href = "/login";
+  };
+
   return (
     <div style={{ backgroundColor: '#f5f8ff', minHeight: '100vh', padding: '2rem' }}>
       {/* Header */}
@@ -25,7 +31,7 @@ function ClearanceDashboard({ currentUser }) {
         <div>
           <span className="me-3">{currentUser?.name}</span>
           <span className="badge bg-secondary">{currentUser?.department}</span>
-          <Button variant="outline-danger" className="ms-3">Logout</Button>
+          <Button variant="outline-danger" className="ms-3" onClick={handleLogout}>Logout</Button>
         </div>
       </div>
 

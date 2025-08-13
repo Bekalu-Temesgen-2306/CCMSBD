@@ -3,14 +3,14 @@
     {
       "username": "stu001",
       "password": "pass123",
-      "studentName": "John Doe",
+      "studentName": "John ",
       "firstName": "John",
       "lastName": "Doe",
       "studentId": "BDU/CS/001/16",
       "department": "Computer Science",
-      "academicYear": "2016",
-      "semester": "2nd",
-      "yearOfStudy": "IV"
+      "sex": "Male",
+      "fatherName": " Doe",
+      "grandFatherName": "Robert "
     },
     {
       "username": "stu002",
@@ -20,9 +20,9 @@
       "lastName": "Wilson",
       "studentId": "BDU/CS/002/16",
       "department": "Computer Science",
-      "academicYear": "2016",
-      "semester": "2nd",
-      "yearOfStudy": "IV"
+      "sex": "Female",
+      "fatherName": " Wilson",
+      "grandFatherName": "Thomas "
     },
     {
       "username": "stu003",
@@ -32,9 +32,10 @@
       "lastName": "Lee",
       "studentId": "BDU/CS/003/16",
       "department": "Computer Science",
-      "academicYear": "2016",
-      "semester": "2nd",
-      "yearOfStudy": "III"
+      "sex": "Male",
+      
+      "fatherName": " Lee",
+      "grandFatherName": "Richard "
     },
     {
       "username": "stu004",
@@ -44,9 +45,12 @@
       "lastName": "Tesfaye",
       "studentId": "BDU/IT/001/16",
       "department": "Information Technology",
+      "sex": "Female",
       "academicYear": "2016",
       "semester": "2nd",
-      "yearOfStudy": "IV"
+      "yearOfStudy": "IV",
+      "fatherName": " Tesfaye",
+      "grandFatherName": "Kebede "
     },
     {
       "username": "stu005",
@@ -56,9 +60,10 @@
       "lastName": "Desta",
       "studentId": "BDU/IT/002/16",
       "department": "Information Technology",
-      "academicYear": "2016",
-      "semester": "2nd",
-      "yearOfStudy": "III"
+      "sex": "Male",
+      
+      "fatherName": " Desta",
+      "grandFatherName": "Mengistu "
     },
     {
       "username": "stu006",
@@ -68,9 +73,9 @@
       "lastName": "Taye",
       "studentId": "BDU/EE/001/16",
       "department": "Electrical Engineering",
-      "academicYear": "2016",
-      "semester": "2nd",
-      "yearOfStudy": "IV"
+      "sex": "Female",
+      "fatherName": " Taye",
+      "grandFatherName": "Daniel "
     },
     {
       "username": "stu007",
@@ -80,9 +85,9 @@
       "lastName": "Kebede",
       "studentId": "BDU/EE/002/16",
       "department": "Electrical Engineering",
-      "academicYear": "2016",
-      "semester": "2nd",
-      "yearOfStudy": "III"
+      "sex": "Male",
+      "fatherName": " Kebede",
+      "grandFatherName": "Mulugeta "
     },
     {
       "username": "stu008",
@@ -92,9 +97,9 @@
       "lastName": "Getachew",
       "studentId": "BDU/ME/001/16",
       "department": "Mechanical Engineering",
-      "academicYear": "2016",
-      "semester": "2nd",
-      "yearOfStudy": "IV"
+      "sex": "Female",
+      "fatherName": " Getachew",
+      "grandFatherName": "Dawit "
     },
     {
       "username": "stu009",
@@ -104,9 +109,9 @@
       "lastName": "Kebede",
       "studentId": "BDU/ME/002/16",
       "department": "Mechanical Engineering",
-      "academicYear": "2016",
-      "semester": "2nd",
-      "yearOfStudy": "III"
+      "sex": "Male",
+      "fatherName": " Kebede",
+      "grandFatherName": "Assefa "
     },
     {
       "username": "stu010",
@@ -116,9 +121,9 @@
       "lastName": "Solomon",
       "studentId": "BDU/CE/001/16",
       "department": "Civil Engineering",
-      "academicYear": "2016",
-      "semester": "2nd",
-      "yearOfStudy": "IV"
+      "sex": "Female",
+      "fatherName": " Solomon",
+      "grandFatherName": "Yohannes "
     }
   ]
 }

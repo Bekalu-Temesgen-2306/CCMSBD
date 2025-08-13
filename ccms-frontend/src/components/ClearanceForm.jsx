@@ -21,7 +21,7 @@ function ClearanceForm({ show, handleClose, currentUser }) {
   const [formData, setFormData] = useState({
     studentName: '',
     fatherName: '',
-    grandFatherName: '', // Added Grandfather name
+    grandFatherName: '', 
     sex: 'Male',
     studentId: '',
     department: '',
@@ -51,13 +51,15 @@ function ClearanceForm({ show, handleClose, currentUser }) {
           studentName: studentData.studentName || '',
           studentId: studentData.studentId || '',
           department: studentData.department || '',
-          academicYear: studentData.academicYear || '',
-          semester: studentData.semester || '',
-          yearOfStudy: studentData.yearOfStudy || '',
-          // Keep dynamic fields empty for user input
-          fatherName: '',
-          grandFatherName: '',
-          sex: 'Male',
+          // Remove auto-fill for academic year, semester, and year of study - let students fill these
+          academicYear: '',
+          semester: '',
+          yearOfStudy: '',
+          // Auto-fill family information
+          fatherName: studentData.fatherName || '',
+          grandFatherName: studentData.grandFatherName || '',
+          // Auto-fill sex from database
+          sex: studentData.sex || 'Male',
           reason: '',
           otherReason: '',
           date: new Date().toISOString().slice(0, 16)
@@ -75,11 +77,13 @@ function ClearanceForm({ show, handleClose, currentUser }) {
   const validateForm = () => {
     const newErrors = {};
 
-    // Only validate dynamic fields that user needs to fill
-    if (!formData.fatherName.trim())
-      newErrors.fatherName = 'Father\'s Name is required.';
-    if (!formData.grandFatherName.trim())
-      newErrors.grandFatherName = 'Grandfather\'s Name is required.';
+    // Validate dynamic fields that user needs to fill
+    if (!formData.academicYear.trim())
+      newErrors.academicYear = 'Academic Year is required.';
+    if (!formData.semester.trim())
+      newErrors.semester = 'Semester is required.';
+    if (!formData.yearOfStudy.trim())
+      newErrors.yearOfStudy = 'Year of Study is required.';
     if (!formData.reason)
       newErrors.reason = 'Reason for Clearance is required.';
     if (formData.reason === 'Other' && !formData.otherReason.trim())
@@ -197,7 +201,8 @@ function ClearanceForm({ show, handleClose, currentUser }) {
       const riskEntry = mockRiskData.risks.find(
         (entry) =>
           entry.studentId.trim().toLowerCase() ===
-          formData.studentId.trim().toLowerCase()
+          formData.studentId.trim().toLowerCase() &&
+          entry.status === "atRisk"
       );
 
       if (riskEntry) {
@@ -277,7 +282,7 @@ function ClearanceForm({ show, handleClose, currentUser }) {
             {/* Father Name */}
             <Col md={6} className="mb-3">
               <Form.Group controlId="fatherName">
-                <Form.Label className="fw-bold">Father's Name *</Form.Label>
+                <Form.Label className="fw-bold">Father's Name <small className="text-muted">(Auto-filled)</small></Form.Label>
                 <Form.Control
                   type="text"
                   name="fatherName"
@@ -286,6 +291,8 @@ function ClearanceForm({ show, handleClose, currentUser }) {
                   isInvalid={!!errors.fatherName}
                   placeholder="Father Name"
                   required
+                  readOnly
+                  className="bg-light"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.fatherName}
@@ -298,7 +305,7 @@ function ClearanceForm({ show, handleClose, currentUser }) {
           <Row className="mb-3">
             <Col md={6} className="mb-3">
               <Form.Group controlId="grandFatherName">
-                <Form.Label className="fw-bold">Grandfather's Name *</Form.Label>
+                <Form.Label className="fw-bold">Grandfather's Name <small className="text-muted">(Auto-filled)</small></Form.Label>
                 <Form.Control
                   type="text"
                   name="grandFatherName"
@@ -307,6 +314,8 @@ function ClearanceForm({ show, handleClose, currentUser }) {
                   isInvalid={!!errors.grandFatherName}
                   placeholder="Grandfather Name"
                   required
+                  readOnly
+                  className="bg-light"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.grandFatherName}
@@ -317,7 +326,7 @@ function ClearanceForm({ show, handleClose, currentUser }) {
             {/* Sex */}
             <Col md={6} className="mb-3">
               <Form.Group controlId="sex">
-                <Form.Label className="fw-bold">Sex *</Form.Label>
+                <Form.Label className="fw-bold">Sex <small className="text-muted">(Auto-filled)</small></Form.Label>
                 <div>
                   <Form.Check
                     inline
@@ -327,6 +336,8 @@ function ClearanceForm({ show, handleClose, currentUser }) {
                     label="Male"
                     checked={formData.sex === 'Male'}
                     onChange={handleChange}
+                    disabled
+                    className="bg-light"
                   />
                   <Form.Check
                     inline
@@ -336,6 +347,8 @@ function ClearanceForm({ show, handleClose, currentUser }) {
                     label="Female"
                     checked={formData.sex === 'Female'}
                     onChange={handleChange}
+                    disabled
+                    className="bg-light"
                   />
                 </div>
               </Form.Group>
@@ -388,17 +401,15 @@ function ClearanceForm({ show, handleClose, currentUser }) {
             {/* Academic Year */}
             <Col md={3} className="mb-3">
               <Form.Group controlId="academicYear">
-                <Form.Label className="fw-bold">Academic Year <small className="text-muted">(Auto-filled)</small></Form.Label>
+                <Form.Label className="fw-bold">Academic Year *</Form.Label>
                 <Form.Control
                   type="text"
                   name="academicYear"
                   value={formData.academicYear}
                   onChange={handleChange}
                   isInvalid={!!errors.academicYear}
-                  placeholder="e.g., 2016"
+                  placeholder="e.g., 2024"
                   required
-                  readOnly
-                  className="bg-light"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.academicYear}
@@ -409,19 +420,18 @@ function ClearanceForm({ show, handleClose, currentUser }) {
             {/* Semester */}
             <Col md={3} className="mb-3">
               <Form.Group controlId="semester">
-                <Form.Label className="fw-bold">Semester <small className="text-muted">(Auto-filled)</small></Form.Label>
+                <Form.Label className="fw-bold">Semester *</Form.Label>
                 <Form.Select
                   name="semester"
                   value={formData.semester}
                   onChange={handleChange}
                   isInvalid={!!errors.semester}
                   required
-                  disabled
-                  className="bg-light"
                 >
                   <option value="">Select semester</option>
                   <option value="1st">1st</option>
                   <option value="2nd">2nd</option>
+                  <option value="Summer">Summer</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   {errors.semester}
@@ -434,21 +444,22 @@ function ClearanceForm({ show, handleClose, currentUser }) {
           <Row className="mb-3">
             <Col md={3} className="mb-3">
               <Form.Group controlId="yearOfStudy">
-                <Form.Label className="fw-bold">Year of Study <small className="text-muted">(Auto-filled)</small></Form.Label>
+                <Form.Label className="fw-bold">Year of Study *</Form.Label>
                 <Form.Select
                   name="yearOfStudy"
                   value={formData.yearOfStudy}
                   onChange={handleChange}
                   isInvalid={!!errors.yearOfStudy}
                   required
-                  disabled
-                  className="bg-light"
                 >
                   <option value="">Select year</option>
                   <option value="I">I</option>
                   <option value="II">II</option>
                   <option value="III">III</option>
                   <option value="IV">IV</option>
+                  <option value="V">V</option>
+                  <option value="V">VI</option>
+                   <option value="V">VII</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   {errors.yearOfStudy}

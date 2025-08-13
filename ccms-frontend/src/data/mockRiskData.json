@@ -7,7 +7,9 @@
       "department": "Computer Science",
       "riskCase": "Overdue Books - 3 books not returned",
       "addedBy": "Abebe Tesfaye (Library)",
-      "addedOn": "2023-10-01"
+      "addedOn": "2023-10-01",
+      "status": "atRisk",
+      "resolvedDate": null
     },
     {
       "firstName": "David",
@@ -16,7 +18,9 @@
       "department": "Computer Science",
       "riskCase": "Damaged Equipment - Lab computer monitor",
       "addedBy": "Almaz Getachew (Sports)",
-      "addedOn": "2023-10-02"
+      "addedOn": "2023-10-02",
+      "status": "atRisk",
+      "resolvedDate": null
     },
     {
       "firstName": "Selam",
@@ -25,7 +29,9 @@
       "department": "Information Technology",
       "riskCase": "Pending Lab Fee Payment",
       "addedBy": "Bereket Hailu (Dormitory)",
-      "addedOn": "2023-10-03"
+      "addedOn": "2023-10-03",
+      "status": "atRisk",
+      "resolvedDate": null
     },
     {
       "firstName": "Bereket",
@@ -34,7 +40,9 @@
       "department": "Information Technology",
       "riskCase": "Pending Lab Fee Payment",
       "addedBy": "Eden Tesfaye (Registrar)",
-      "addedOn": "2023-10-04"
+      "addedOn": "2023-10-04",
+      "status": "atRisk",
+      "resolvedDate": null
     }
   ]
 }

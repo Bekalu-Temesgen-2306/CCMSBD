@@ -29,6 +29,7 @@ function DepartmentAdmin({ currentUser }) {
   const [formError, setFormError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterDepartment, setFilterDepartment] = useState("");
+  const [riskStatusFilter, setRiskStatusFilter] = useState("all"); // Add status filter
 
   // ✅ Load risk data from localStorage (or fallback to JSON)
   useEffect(() => {
@@ -67,7 +68,14 @@ function DepartmentAdmin({ currentUser }) {
   const openEditModal = (index) => {
     setFormMode("edit");
     setEditingIndex(index);
-    const student = riskStudents[index];
+    const student = filteredRiskStudents[index];
+    // Find the actual index in the original array
+    const actualIndex = riskStudents.findIndex(risk => 
+      risk.studentId === student.studentId && 
+      risk.riskCase === student.riskCase &&
+      risk.addedOn === student.addedOn
+    );
+    setEditingIndex(actualIndex);
     setSelectedStudent({
       firstName: student.firstName,
       lastName: student.lastName,
@@ -111,7 +119,9 @@ function DepartmentAdmin({ currentUser }) {
       addedBy: currentUser?.name 
         ? `${currentUser.name} (${currentUser.department || 'No Dept'})`
         : `${currentUser?.firstName || ''} ${currentUser?.lastName || ''} (${currentUser?.department || 'No Dept'})`.trim() || "Unknown Official",
-      addedOn: new Date().toISOString().split('T')[0]
+      addedOn: new Date().toISOString().split('T')[0],
+      status: "atRisk",
+      resolvedDate: null
     };
 
     if (formMode === "add") {
@@ -125,18 +135,40 @@ function DepartmentAdmin({ currentUser }) {
     closeModal();
   };
 
-  const handleDelete = (index) => {
-    if (window.confirm("Are you sure you want to remove this student from risk?")) {
+  // Rename function to be more descriptive
+  const handleResolveRisk = (index) => {
+    if (window.confirm("Are you sure you want to mark this risk as resolved? This will keep the record for historical purposes.")) {
+      const student = filteredRiskStudents[index];
+      // Find the actual index in the original array
+      const actualIndex = riskStudents.findIndex(risk => 
+        risk.studentId === student.studentId && 
+        risk.riskCase === student.riskCase &&
+        risk.addedOn === student.addedOn
+      );
       const updatedList = [...riskStudents];
-      updatedList.splice(index, 1);
+      updatedList[actualIndex] = {
+        ...updatedList[actualIndex],
+        status: "resolved",
+        resolvedDate: new Date().toISOString().split('T')[0]
+      };
       setRiskStudents(updatedList);
     }
   };
 
-  // Check if student is already in risk list
+  // Check if student is already in risk list (only atRisk risks)
   const isStudentInRisk = (studentId) => {
-    return riskStudents.some(risk => risk.studentId === studentId);
+    return riskStudents.some(risk => risk.studentId === studentId && risk.status === "atRisk");
   };
+
+  // Filter risks based on status
+  const filteredRiskStudents = riskStudents.filter(risk => {
+    if (riskStatusFilter === "atRisk") {
+      return risk.status === "atRisk";
+    } else if (riskStatusFilter === "resolved") {
+      return risk.status === "resolved";
+    }
+    return true; // Show all
+  });
 
   return (
     <Container fluid className="p-4" style={{ backgroundColor: "#f8f9fc", minHeight: "100vh" }}>
@@ -174,7 +206,7 @@ function DepartmentAdmin({ currentUser }) {
             <h5 className="mb-1">Students at Risk in {currentUser?.department || "Department Official"}</h5>
             <p className="text-muted mb-0">Students with pending issues</p>
           </div>
-          <div className="display-4 text-danger fw-bold">{riskStudents.length}</div>
+          <div className="display-4 text-danger fw-bold">{riskStudents.filter(risk => risk.status === "atRisk").length}</div>
           <div className="ms-3 fs-1 text-danger">⚠️</div>
         </Card.Body>
       </Card>
@@ -184,9 +216,21 @@ function DepartmentAdmin({ currentUser }) {
         <Card.Body>
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h5 className="mb-0">Risk Table Management</h5>
-            <Button variant="danger" onClick={openAddModal}>
-              + Add Student to Risk
-            </Button>
+            <div className="d-flex align-items-center">
+              <Form.Select
+                style={{ width: "150px" }}
+                value={riskStatusFilter}
+                onChange={(e) => setRiskStatusFilter(e.target.value)}
+                className="me-3"
+              >
+                <option value="all">All Status</option>
+                <option value="atRisk">At Risk Only</option>
+                <option value="resolved">Resolved Only</option>
+              </Form.Select>
+              <Button variant="danger" onClick={openAddModal}>
+                + Add Student to Risk
+              </Button>
+            </div>
           </div>
           <Table striped bordered hover responsive>
             <thead className="table-light">
@@ -197,11 +241,12 @@ function DepartmentAdmin({ currentUser }) {
                 <th>Department</th>
                 <th>Risk Case</th>
                 <th>Added By</th>
+                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {riskStudents.map((student, index) => (
+              {filteredRiskStudents.map((student, index) => (
                 <tr key={index}>
                   <td>{student.firstName}</td>
                   <td>{student.lastName}</td>
@@ -209,6 +254,19 @@ function DepartmentAdmin({ currentUser }) {
                   <td>{student.department}</td>
                   <td>{student.riskCase || student.case}</td>
                   <td>{student.addedBy}</td>
+                  <td>
+                    {student.status === "atRisk" && (
+                      <span className="badge bg-danger">At Risk</span>
+                    )}
+                    {student.status === "resolved" && (
+                      <span className="badge bg-success">Resolved</span>
+                    )}
+                    {student.resolvedDate && (
+                      <span className="badge bg-info ms-2">
+                        Resolved on: {student.resolvedDate}
+                      </span>
+                    )}
+                  </td>
                   <td>
                     <Button
                       size="sm"
@@ -218,13 +276,18 @@ function DepartmentAdmin({ currentUser }) {
                     >
                       <PencilSquare />
                     </Button>
-                    <Button
-                      size="sm"
-                      variant="outline-danger"
-                      onClick={() => handleDelete(index)}
-                    >
-                      <Trash />
-                    </Button>
+                    {student.status === "atRisk" && (
+                      <Button
+                        size="sm"
+                        variant="outline-success"
+                        onClick={() => handleResolveRisk(index)}
+                      >
+                        Resolve
+                      </Button>
+                    )}
+                    {student.status === "resolved" && (
+                      <span className="text-success">Resolved</span>
+                    )}
                   </td>
                 </tr>
               ))}

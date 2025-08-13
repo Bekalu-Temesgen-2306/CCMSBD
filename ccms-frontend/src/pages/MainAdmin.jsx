@@ -50,6 +50,7 @@ function MainAdmin({ currentUser }) {
 
   const [officialSearch, setOfficialSearch] = useState(""); // 🔥 Search input for officials
   const [riskSearch, setRiskSearch] = useState(""); // 🔥 Search input for risks
+  const [riskStatusFilter, setRiskStatusFilter] = useState("all"); // 🔥 Status filter for risks
 
   // ✅ Load data from localStorage or fallback JSON
   useEffect(() => {
@@ -72,7 +73,7 @@ function MainAdmin({ currentUser }) {
 
     setSummary({
       totalOfficials: (storedOfficials || mockOfficials.officials).length,
-      studentsAtRisk: (storedRisks || mockRiskData.risks).length,
+      studentsAtRisk: (storedRisks || mockRiskData.risks).filter(risk => risk.status === "atRisk").length,
       clearanceRequests: 24, // Static for now
     });
   }, []);
@@ -84,7 +85,7 @@ function MainAdmin({ currentUser }) {
     setSummary((prev) => ({
       ...prev,
       totalOfficials: officials.length,
-      studentsAtRisk: risks.length,
+      studentsAtRisk: risks.filter(risk => risk.status === "atRisk").length,
     }));
   }, [officials, risks]);
 
@@ -175,12 +176,19 @@ function MainAdmin({ currentUser }) {
       .includes(officialSearch.toLowerCase())
   );
 
-  const filteredRisks = risks.filter((risk) =>
-    Object.values(risk)
+  const filteredRisks = risks.filter((risk) => {
+    const matchesSearch = Object.values(risk)
       .join(" ")
       .toLowerCase()
-      .includes(riskSearch.toLowerCase())
-  );
+      .includes(riskSearch.toLowerCase());
+
+    if (riskStatusFilter === "atRisk") {
+      return matchesSearch && risk.status === "atRisk";
+    } else if (riskStatusFilter === "resolved") {
+      return matchesSearch && risk.status === "resolved";
+    }
+    return matchesSearch;
+  });
 
   // ✅ Export filtered data to CSV
   const exportFilteredToCSV = (data, filename) => {
@@ -415,16 +423,27 @@ function MainAdmin({ currentUser }) {
           <Card.Body>
             {/* Search bar */}
             <div className="d-flex justify-content-between align-items-center mb-3">
-              <InputGroup style={{ width: "300px" }}>
-                <InputGroup.Text>
-                  <Search />
-                </InputGroup.Text>
-                <Form.Control
-                  placeholder="Search risk students..."
-                  value={riskSearch}
-                  onChange={(e) => setRiskSearch(e.target.value)}
-                />
-              </InputGroup>
+              <div className="d-flex align-items-center">
+                <InputGroup style={{ width: "300px" }} className="me-3">
+                  <InputGroup.Text>
+                    <Search />
+                  </InputGroup.Text>
+                  <Form.Control
+                    placeholder="Search risk students..."
+                    value={riskSearch}
+                    onChange={(e) => setRiskSearch(e.target.value)}
+                  />
+                </InputGroup>
+                <Form.Select
+                  style={{ width: "150px" }}
+                  value={riskStatusFilter}
+                  onChange={(e) => setRiskStatusFilter(e.target.value)}
+                >
+                  <option value="all">All Status</option>
+                  <option value="atRisk">At Risk Only</option>
+                  <option value="resolved">Resolved Only</option>
+                </Form.Select>
+              </div>
               <div>
                 <Button
                   variant="success"
@@ -455,6 +474,7 @@ function MainAdmin({ currentUser }) {
                   <th>Department</th>
                   <th>Risk Case</th>
                   <th>Added by</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -467,12 +487,19 @@ function MainAdmin({ currentUser }) {
                       <td>{risk.department}</td>
                       <td>{risk.riskCase || risk.case}</td>
                       <td>{risk.addedBy}</td>
-
+                      <td>
+                        {risk.status === "atRisk" && (
+                          <span className="badge bg-danger">At Risk</span>
+                        )}
+                        {risk.status === "resolved" && (
+                          <span className="badge bg-success">Resolved</span>
+                        )}
+                      </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="6" className="text-center">
+                    <td colSpan="7" className="text-center">
                       No matching risk students found.
                     </td>
                   </tr>
